@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Chatbot{% endblock %}
+
+{% block content %}
+<h1>Chat with the Bot(Coming Soon)</h1>
+
+<form action="/chatbot" method="post">
+    <input type="text" name="message" placeholder="Say something..." required>
+    <input type="submit" value="Send">
+</form>
+
+{% if user_input and response %}
+<div class="chat">
+    <p><strong>You:</strong> {{ user_input }}</p>
+    <p><strong>Bot:</strong> {{ response }} ChatBot Coming Soon...</p>
+</div>
+{% endif %}
+{% endblock %}

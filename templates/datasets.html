@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Download Sample Datasets</h1>
+
+<p>Below are some sample datasets you can use to generate correlation heatmaps:</p>
+
+<div class="dataset-links">
+    <ul>
+        <li><a href="{{ url_for('static', filename='datasets/sample1.csv') }}" download>Download Sample Dataset 1 (CSV)</a></li>
+        <li><a href="{{ url_for('static', filename='datasets/sample2.xlsx') }}" download>Download Sample Dataset 2 (Excel)</a></li>
+        <li><a href="{{ url_for('static', filename='datasets/sample3.csv') }}" download>Download Sample Dataset 3 (CSV)</a></li>
+    </ul>
+</div>
+{% endblock %}

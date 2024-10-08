@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Mechanics Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/heatmap">Heatmap</a></li>
+            <li><a href="/chatbot">ChatBot</a></li>
+            <li><a href="/datasets">Sample Datasets</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" style="background-image: url('{{ url_for('static', filename='rock_background.jpg') }}');">
+        <div class="hero-content">
+            <h1>Welcome to the Rock Mechanics Tool</h1>
+            <p>Explore, learn, and analyze the mechanics of rocks with advanced tools and resources.</p>
+        </div>
+    </header>       
+
+    <!-- Main Content -->
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer (optional) -->
+    <footer>
+        <p>&copy; 2024 Rock Mechanics Tool. All rights reserved.</p>
+    </footer>
+</body>
+</html>

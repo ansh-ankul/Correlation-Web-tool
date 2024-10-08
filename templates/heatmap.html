@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Correlation Heatmap</h1>
+
+
+<form action="/upload" method="post" enctype="multipart/form-data" style="text-align: center;">
+    <label for="file-upload" class="label-file">Choose File</label>
+    <input id="file-upload" type="file" name="file" accept=".csv, .xlsx, .xls" required onchange="showFileName()">
+    
+    <p id="file-name" style="color: #f39c12; font-size: 1.1rem; margin-top: 10px;"></p>
+
+    <p style="color: white; margin-top: 20px; font-size: 1.1rem;">
+        Please upload a CSV or Excel file with numeric data. The tool will generate a correlation heatmap based on the selected file's contents.
+    </p>
+    <p style="color: white; margin-bottom: 20px; font-size: 1.1rem;">
+        Accepted formats: <strong>.csv, .xlsx, .xls</strong>. Ensure that the file contains numeric values for accurate correlation analysis.
+    </p>
+    <input type="submit" value="Upload">
+</form>
+
+{% if heatmap %}
+    <h2>Correlation Heatmap</h2>
+    <img src="{{ url_for('static', filename=heatmap) }}" alt="Correlation Heatmap" style="max-width: 100%; height: auto; margin: 20px auto; display: block;">
+
+    <form action="/heatmap" method="get">
+        <button class="button-again">Generate Again</button>
+    </form>
+{% endif %}
+{% endblock %}
+
+<script>
+    function showFileName() {
+        var input = document.getElementById('file-upload');
+        var fileName = input.files[0] ? input.files[0].name : "No file chosen";
+        document.getElementById('file-name').textContent = "Selected File: " + fileName;
+    }
+</script>
