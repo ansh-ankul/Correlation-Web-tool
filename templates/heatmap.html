@@ -20,7 +20,6 @@
 </form>
 
 {% if heatmap %}
-    <h2>Correlation Heatmap</h2>
     <img src="{{ url_for('static', filename=heatmap) }}" alt="Correlation Heatmap" style="max-width: 100%; height: auto; margin: 20px auto; display: block;">
 
     <form action="/heatmap" method="get">

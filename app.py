@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import pandas as pd
 import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
 import os
 import tempfile
+import io
+
 matplotlib.use('Agg') 
 os.environ['MPLCONFIGDIR'] = '/tmp' 
 plt.rcParams.update({'font.size': 12})
@@ -26,7 +28,6 @@ def heatmap():
 @app.route('/datasets')
 def datasets():
     return render_template('datasets.html')
-
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -56,23 +57,20 @@ def upload_file():
 
                 corr_matrix = numeric_df.corr()
 
-                
+                # Create the heatmap and save it to a BytesIO object
+                plt.figure(figsize=(12, 10)) 
+                sns.set(font_scale=1.2)
+                ax = sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, annot_kws={"size": 12}, cbar_kws={"shrink": 0.8})
+                ax.tick_params(axis='both', which='major', labelsize=12)
+                plt.tight_layout()
 
-                # Create the heatmap and save it in a temporary location
-                with tempfile.NamedTemporaryFile(suffix=".png", dir='/tmp', delete=False) as tmpfile:
-                    plt.figure(figsize=(12, 10)) 
-                    sns.set(font_scale=1.2)
-                    ax = sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, annot_kws={"size": 12}, cbar_kws={"shrink": 0.8})
-                    ax.tick_params(axis='both', which='major', labelsize=12)
-                    plt.tight_layout()
-                    plt.savefig(tmpfile.name, bbox_inches='tight') 
-                    plt.close()
+                # Save the plot to a BytesIO object
+                img = io.BytesIO()
+                plt.savefig(img, format='png', bbox_inches='tight')
+                plt.close()
+                img.seek(0)
 
-                    heatmap_url = f"/tmp/{os.path.basename(tmpfile.name)}"
-
-                # Return the heatmap path for rendering
-                return render_template('heatmap.html', heatmap=heatmap_url)
-
+                return send_file(img, mimetype='image/png')
 
         except Exception as e:
             return render_template('heatmap.html', error=f"An error occurred: {str(e)}")
@@ -87,4 +85,3 @@ def chatbot():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
