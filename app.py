@@ -5,6 +5,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import os
 matplotlib.use('Agg') 
+os.environ['MPLCONFIGDIR'] = '/tmp'
+plt.rcParams.update({'font.size': 12})
 
 app = Flask(__name__)
 
