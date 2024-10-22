@@ -23,7 +23,7 @@ h1, h2 {
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 40px; /* Ensure the navbar has sufficient height */
+    height: 40px; 
 }
 
 .logo {
@@ -34,18 +34,18 @@ h1, h2 {
 .logo-img {
     height: 50px;
     width: auto;
-    margin-right: 20px; /* Add spacing between logo and links */
+    margin-right: 20px; 
 }
 
 .nav-links {
     list-style: none;
     display: flex;
     margin: 0;
-    padding-right: 60px; /* Add padding to the right of the entire nav */
+    padding-right: 60px; 
 }
 
 .nav-links li {
-    margin-left: 30px; /* Adjust spacing between individual nav items */
+    margin-left: 30px; 
 }
 
 .nav-links a {
@@ -72,13 +72,13 @@ h1, h2 {
 /* Hero Section */
 .hero-content h1 {
     font-size: 3rem;
-    color: #f39c12;  /* Keeps the orange color */
+    color: #f39c12;  
     text-align: center;
     text-shadow: 
         -1px -1px 0 #000,  
          1px -1px 0 #000,
         -1px  1px 0 #000,
-         1px  1px 0 #000;  /* This adds a black border-like effect */
+         1px  1px 0 #000;  
     margin-bottom: 10px;
 }
 
@@ -173,7 +173,7 @@ img {
 
 /* File Upload Input */
 input[type="file"] {
-    display: none; /* Hide default input */
+    display: none; 
 }
 
 .label-file {
@@ -218,7 +218,7 @@ input[type="submit"]:hover {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin: 20px auto; /* Center button */
+    margin: 20px auto; 
     display: block;
     transition: background-color 0.3s ease;
 }
@@ -228,7 +228,7 @@ input[type="submit"]:hover {
 }
 
 .content {
-    padding-bottom: 100px; /* Adjust this if needed */
+    padding-bottom: 100px; 
 }
 
 /* Sample Datasets Links */

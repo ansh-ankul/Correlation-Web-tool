@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import pandas as pd
 import seaborn as sns
 import matplotlib
-matplotlib.use('Agg')  # Use the 'Agg' backend for non-GUI rendering
+matplotlib.use('Agg') 
 import matplotlib.pyplot as plt
 import os
 
