@@ -3,5 +3,4 @@ pandas
 seaborn
 matplotlib
 gunicorn
-os
 tempfile
