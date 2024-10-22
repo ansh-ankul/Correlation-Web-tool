@@ -4,13 +4,13 @@ import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
 import os
+import tempfile
 matplotlib.use('Agg') 
-os.environ['MPLCONFIGDIR'] = '/tmp'
+os.environ['MPLCONFIGDIR'] = '/tmp' 
 plt.rcParams.update({'font.size': 12})
 
 app = Flask(__name__)
 
-# Folder to store the uploaded files
 UPLOAD_FOLDER = 'uploads'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -56,18 +56,23 @@ def upload_file():
 
                 corr_matrix = numeric_df.corr()
 
-                # Create the heatmap 
-                plt.figure(figsize=(12, 10)) 
-                sns.set(font_scale=1.2)
-                ax = sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, annot_kws={"size": 12}, cbar_kws={"shrink": 0.8})
-                ax.tick_params(axis='both', which='major', labelsize=12)
-                plt.tight_layout()
-                heatmap_path = os.path.join('static', 'heatmap.png')
-                plt.savefig(heatmap_path, bbox_inches='tight') 
-                plt.close()
+                
 
+                # Create the heatmap and save it in a temporary location
+                with tempfile.NamedTemporaryFile(suffix=".png", dir='/tmp', delete=False) as tmpfile:
+                    plt.figure(figsize=(12, 10)) 
+                    sns.set(font_scale=1.2)
+                    ax = sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, annot_kws={"size": 12}, cbar_kws={"shrink": 0.8})
+                    ax.tick_params(axis='both', which='major', labelsize=12)
+                    plt.tight_layout()
+                    plt.savefig(tmpfile.name, bbox_inches='tight') 
+                    plt.close()
 
-                return render_template('heatmap.html', heatmap='heatmap.png')
+                    heatmap_url = f"/tmp/{os.path.basename(tmpfile.name)}"
+
+                # Return the heatmap path for rendering
+                return render_template('heatmap.html', heatmap=heatmap_url)
+
 
         except Exception as e:
             return render_template('heatmap.html', error=f"An error occurred: {str(e)}")
