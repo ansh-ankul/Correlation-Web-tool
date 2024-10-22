@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request
 import pandas as pd
 import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
 import os
-import tempfile
 import io
+import base64
 
 matplotlib.use('Agg') 
 os.environ['MPLCONFIGDIR'] = '/tmp' 
@@ -70,7 +70,12 @@ def upload_file():
                 plt.close()
                 img.seek(0)
 
-                return send_file(img, mimetype='image/png')
+                # Convert the BytesIO object to a base64 string
+                img_base64 = base64.b64encode(img.read()).decode('utf-8')
+                img_data = f"data:image/png;base64,{img_base64}"
+
+                # Render the image in the HTML
+                return render_template('heatmap.html', heatmap=img_data)
 
         except Exception as e:
             return render_template('heatmap.html', error=f"An error occurred: {str(e)}")
