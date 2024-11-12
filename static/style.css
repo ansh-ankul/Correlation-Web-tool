@@ -185,8 +185,7 @@ input[type="file"] {
     border-radius: 5px;
     text-align: center;
     display: inline-block;
-    transition: background-color 0.3s ease;
-    margin-right: 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .label-file:hover {
@@ -252,3 +251,4 @@ input[type="submit"]:hover {
 .dataset-links ul li a:hover {
     color: #2980b9;
 }
+

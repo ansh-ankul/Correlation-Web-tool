@@ -4,9 +4,9 @@
 <h1>Correlation Heatmap</h1>
 
 <form action="/upload" method="post" enctype="multipart/form-data" style="text-align: center;">
-    <label for="file-upload" class="label-file">Choose File</label>
+    <label for="file-upload" id="file-label" class="label-file">Choose File</label>
     <input id="file-upload" type="file" name="file" accept=".csv, .xlsx, .xls" required onchange="showFileName()">
-    
+
     <p id="file-name" style="color: #f39c12; font-size: 1.1rem; margin-top: 10px;"></p>
 
     <p style="color: white; margin-top: 20px; font-size: 1.1rem;">
@@ -15,7 +15,7 @@
     <p style="color: white; margin-bottom: 20px; font-size: 1.1rem;">
         Accepted formats: <strong>.csv, .xlsx, .xls</strong>. Ensure that the file contains numeric values for accurate correlation analysis.
     </p>
-    <input type="submit" value="Upload">
+    <input id="upload-button" type="submit" value="Upload" class="upload-button">
 </form>
 
 {% if heatmap %}
@@ -29,9 +29,47 @@
 
 <script>
     function showFileName() {
-        var input = document.getElementById('file-upload');
-        var fileName = input.files[0] ? input.files[0].name : "No file chosen";
-        document.getElementById('file-name').textContent = "Selected File: " + fileName;
+        const input = document.getElementById('file-upload');
+        const fileLabel = document.getElementById('file-label');
+        const fileNameElement = document.getElementById('file-name');
+
+        if (input.files.length > 0) {
+            const fileName = input.files[0].name;
+            fileNameElement.textContent = "Selected File: " + fileName;
+
+            // Change the label to green to indicate success
+            fileLabel.style.backgroundColor = '#28a745'; // Green color
+            fileLabel.style.color = 'white';
+            fileLabel.textContent = "File Selected"; // Update label text
+        } else {
+            // Reset the label if no file is selected
+            fileLabel.style.backgroundColor = '#3498db'; // Original blue color
+            fileLabel.style.color = 'white';
+            fileLabel.textContent = "Choose File";
+        }
     }
 </script>
 
+<style>
+    /* File Upload Input Hidden */
+    #file-upload {
+        display: none;
+    }
+
+    /* Label for File Upload */
+    .label-file {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        border-radius: 5px;
+        text-align: center;
+        display: inline-block;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .label-file:hover {
+        background-color: #2980b9;
+    }
+</style>
