@@ -3,7 +3,6 @@
 {% block content %}
 <h1>Correlation Heatmap</h1>
 
-
 <form action="/upload" method="post" enctype="multipart/form-data" style="text-align: center;">
     <label for="file-upload" class="label-file">Choose File</label>
     <input id="file-upload" type="file" name="file" accept=".csv, .xlsx, .xls" required onchange="showFileName()">
@@ -20,7 +19,7 @@
 </form>
 
 {% if heatmap %}
-    <img src="{{ url_for('static', filename=heatmap) }}" alt="Correlation Heatmap" style="max-width: 100%; height: auto; margin: 20px auto; display: block;">
+    <img src="{{ heatmap }}" alt="Correlation Heatmap" style="max-width: 100%; height: auto; margin: 20px auto; display: block;">
 
     <form action="/heatmap" method="get">
         <button class="button-again">Generate Again</button>
@@ -35,3 +34,4 @@
         document.getElementById('file-name').textContent = "Selected File: " + fileName;
     }
 </script>
+

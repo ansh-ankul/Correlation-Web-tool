@@ -1,21 +1,15 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 import pandas as pd
 import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
-import os
 import io
 import base64
 
 matplotlib.use('Agg') 
-os.environ['MPLCONFIGDIR'] = '/tmp' 
 plt.rcParams.update({'font.size': 12})
 
 app = Flask(__name__)
-
-UPLOAD_FOLDER = 'uploads'
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 
 @app.route('/')
 def home():
@@ -35,14 +29,11 @@ def upload_file():
         try:
             file = request.files['file']
             if file:
-                file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-                file.save(file_path)
-
                 try:
                     if file.filename.endswith('.csv'):
-                        df = pd.read_csv(file_path)
+                        df = pd.read_csv(file)
                     elif file.filename.endswith('.xlsx') or file.filename.endswith('.xls'):
-                        df = pd.read_excel(file_path)
+                        df = pd.read_excel(file)
                     else:
                         raise ValueError("Unsupported file type. Please upload a CSV or Excel file.")
                 
@@ -64,13 +55,10 @@ def upload_file():
                 ax.tick_params(axis='both', which='major', labelsize=12)
                 plt.tight_layout()
 
-                # Save the plot to a BytesIO object
                 img = io.BytesIO()
                 plt.savefig(img, format='png', bbox_inches='tight')
                 plt.close()
                 img.seek(0)
-
-                # Convert the BytesIO object to a base64 string
                 img_base64 = base64.b64encode(img.read()).decode('utf-8')
                 img_data = f"data:image/png;base64,{img_base64}"
 
