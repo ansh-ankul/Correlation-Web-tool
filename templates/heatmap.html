@@ -9,14 +9,25 @@
 
     <p id="file-name" style="color: #f39c12; font-size: 1.1rem; margin-top: 10px;"></p>
 
+    <p style="color: white; margin-top: 20px; font-size: 1.2rem;">
+        Upload a CSV or Excel file to generate a correlation heatmap. The file should:
+    </p>
+    <ul style="color: white; text-align: left; display: inline-block; font-size: 1.1rem;">
+        <li>Have columns representing features (e.g., temperature, humidity).</li>
+        <li>Have rows containing corresponding values for each feature (e.g., measurements for different days or samples).</li>
+    </ul>
     <p style="color: white; margin-top: 20px; font-size: 1.1rem;">
-        Please upload a CSV or Excel file with numeric data. The tool will generate a correlation heatmap based on the selected file's contents.
+        Example table format:
     </p>
-    <p style="color: white; margin-bottom: 20px; font-size: 1.1rem;">
-        Accepted formats: <strong>.csv, .xlsx, .xls</strong>. Ensure that the file contains numeric values for accurate correlation analysis.
+    <img src="./../static/example_table.png" alt="Example table with columns as features and rows as values" style="margin: 10px auto; max-width: 90%; border: 1px solid #ddd; border-radius: 5px;">
+
+    <p style="color: white; margin-top: 20px; font-size: 1.1rem;">
+        Accepted formats: <strong>.csv, .xlsx, .xls</strong>. Ensure all columns contain numeric data for accurate correlation analysis. You can find Example heatmap generated in the samples section.
     </p>
+    
     <input id="upload-button" type="submit" value="Upload" class="upload-button">
 </form>
+
 
 {% if heatmap %}
     <img src="{{ heatmap }}" alt="Correlation Heatmap" style="max-width: 100%; height: auto; margin: 20px auto; display: block;">
