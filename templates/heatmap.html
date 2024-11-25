@@ -3,40 +3,50 @@
 {% block content %}
 <h1>Correlation Heatmap</h1>
 
-<form action="/upload" method="post" enctype="multipart/form-data" style="text-align: center;">
-    <label for="file-upload" id="file-label" class="label-file">Choose File</label>
-    <input id="file-upload" type="file" name="file" accept=".csv, .xlsx, .xls" required onchange="showFileName()">
+<div id="heatmap-container">
+    <form id="heatmap-form" action="/upload" method="post" enctype="multipart/form-data" style="text-align: center;">
+        <div id = "form-data">
+        <p id="file-name" style="color: #f39c12; font-size: 1.1rem; margin-top: 10px;"></p>
 
-    <p id="file-name" style="color: #f39c12; font-size: 1.1rem; margin-top: 10px;"></p>
+        <p style="color: white; margin-top: 20px; font-size: 1.2rem;">
+            Upload a CSV or Excel file to generate a correlation heatmap. The file should:
+        </p>
+        <ul style="color: white; text-align: left; display: inline-block; font-size: 1.1rem;">
+            <li>Have columns representing features (e.g., temperature, humidity).</li>
+            <li>Have rows containing corresponding values for each feature (e.g., measurements for different days or samples).</li>
+        </ul>
+        <p style="color: white; margin-top: 20px; font-size: 1.1rem;">
+            Example table format:
+        </p>
+        <img src="./../static/example_table.png" alt="Example table with columns as features and rows as values" style="margin: 10px auto; max-width: 90%; border: 1px solid #ddd; border-radius: 5px;">
 
-    <p style="color: white; margin-top: 20px; font-size: 1.2rem;">
-        Upload a CSV or Excel file to generate a correlation heatmap. The file should:
-    </p>
-    <ul style="color: white; text-align: left; display: inline-block; font-size: 1.1rem;">
-        <li>Have columns representing features (e.g., temperature, humidity).</li>
-        <li>Have rows containing corresponding values for each feature (e.g., measurements for different days or samples).</li>
-    </ul>
-    <p style="color: white; margin-top: 20px; font-size: 1.1rem;">
-        Example table format:
-    </p>
-    <img src="./../static/example_table.png" alt="Example table with columns as features and rows as values" style="margin: 10px auto; max-width: 90%; border: 1px solid #ddd; border-radius: 5px;">
+        <p style="color: white; margin-top: 20px; font-size: 1.1rem;">
+            Accepted formats: <strong>.csv, .xlsx, .xls</strong>. Ensure all columns contain numeric data for accurate correlation analysis.
+        </p>
 
-    <p style="color: white; margin-top: 20px; font-size: 1.1rem;">
-        Accepted formats: <strong>.csv, .xlsx, .xls</strong>. Ensure all columns contain numeric data for accurate correlation analysis. You can find Example heatmap generated in the samples section.
-    </p>
-    
-    <input id="upload-button" type="submit" value="Upload" class="upload-button">
-</form>
+        <h2>Example Correlation Heatmap</h2>
+        <p>Here's an example of a correlation heatmap generated using this tool:</p>
+        <div class="correlation-matrix-example" style="text-align: center;">
+            <img src="{{ url_for('static', filename='example_heatmap.png') }}" 
+                alt="Example Correlation Heatmap" 
+                style="margin-top: 20px; max-width: 100%; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
+        </div>
 
-
-{% if heatmap %}
-    <img src="{{ heatmap }}" alt="Correlation Heatmap" style="max-width: 100%; height: auto; margin: 20px auto; display: block;">
-
-    <form action="/heatmap" method="get">
-        <button class="button-again">Generate Again</button>
+        <label for="file-upload" id="file-label" class="label-file">Choose File</label>
+        <input id="file-upload" type="file" name="file" accept=".csv, .xlsx, .xls" required onchange="showFileName()">
+        
+        <input id="upload-button" type="submit" value="Generate" class="upload-button" onclick="hideForm()">
     </form>
-{% endif %}
-{% endblock %}
+
+    {% if heatmap %}
+        <img src="{{ heatmap }}" alt="Correlation Heatmap" style="max-width: 100%; height: auto; margin: 20px auto; display: block;">
+
+        <form action="/heatmap" method="get" id="generate-again-form">
+            <button class="button-again" onclick="showForm()">Generate Again</button>
+        </form>
+    {% endif %}
+</div>
 
 <script>
     function showFileName() {
@@ -48,39 +58,38 @@
             const fileName = input.files[0].name;
             fileNameElement.textContent = "Selected File: " + fileName;
 
-            // Change the label to green to indicate success
             fileLabel.style.backgroundColor = '#28a745'; // Green color
             fileLabel.style.color = 'white';
-            fileLabel.textContent = "File Selected"; // Update label text
+            fileLabel.textContent = "File Selected";
         } else {
-            // Reset the label if no file is selected
-            fileLabel.style.backgroundColor = '#3498db'; // Original blue color
+            fileLabel.style.backgroundColor = 'Orange'; 
             fileLabel.style.color = 'white';
             fileLabel.textContent = "Choose File";
         }
     }
+
+    function hideForm() {
+        const form = document.getElementById('heatmap-form');
+        const generateAgainButton = document.getElementById('generate-again-form');
+
+        if (form) {
+            form.style.display = 'none';
+        }
+        if (generateAgainButton) {
+            generateAgainButton.style.display = 'block';
+        }
+    }
+
+    function showForm() {
+        const form = document.getElementById('heatmap-form');
+        const generateAgainButton = document.getElementById('generate-again-form');
+
+        if (form) {
+            form.style.display = 'block';
+        }
+        if (generateAgainButton) {
+            generateAgainButton.style.display = 'none';
+        }
+    }
 </script>
-
-<style>
-    /* File Upload Input Hidden */
-    #file-upload {
-        display: none;
-    }
-
-    /* Label for File Upload */
-    .label-file {
-        background-color: #3498db;
-        color: white;
-        padding: 10px 20px;
-        font-size: 1rem;
-        cursor: pointer;
-        border-radius: 5px;
-        text-align: center;
-        display: inline-block;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .label-file:hover {
-        background-color: #2980b9;
-    }
-</style>
+{% endblock %}
